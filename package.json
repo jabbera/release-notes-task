@@ -4,6 +4,7 @@
   "description": "vsts release notes task",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,6 +21,7 @@
     "@types/q": "0.0.32",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "tfx-cli": "^0.3.49",
     "ts-node": "^2.1.0",
     "tsc": "^1.20150623.0",
     "tslint": "^4.5.1",
