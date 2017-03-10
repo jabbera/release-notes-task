@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import * as mailer from "nodemailer";
 import * as wi from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
 import * as tl from "vsts-task-lib/task";
 
@@ -27,16 +26,14 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
     }
 
     public async run() {
-        let subject: string = tl.getInput("Subject", true);
-        let toAddress: string = tl.getInput("ToAddress", true);
+        let outputVariable: string = tl.getInput("OutputVariable", true);
+        let outputFileLocation: string = tl.getInput("OutputFileLocation", true);
+
         let cssFile: string = this.getCssFile();
 
-        let smtpServer: string = this.getSmtpServer();
-        let fromAddress: string = this.getFromAddress();
+        let css: string = fs.readFileSync(cssFile, "utf-8");
 
-        let css: string = fs.readFileSync(cssFile, "utf8");
-
-        let body: string = "<html><head><style type=\"text/css\">" + css + "</style></head><body>";
+        let body: string = "<html><meta charset=\"UTF-8\"><head><style type=\"text/css\">" + css + "</style></head><body>";
 
         body = this.addProductName(body, this.currentlyDeployedRelease.definitionName);
         body = this.addReleaseSummary(body, this.currentlyDeployedRelease, this.releaseInProgress);
@@ -44,17 +41,11 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
 
         body += "</body></html>";
 
-        let t: mailer.Transporter = mailer.createTransport({
-            "host": smtpServer,
-            "port": 25,
-        });
+        tl.setVariable(outputVariable, body);
 
-        await t.sendMail({
-            "from": fromAddress,
-            "to": toAddress,
-            "subject": subject,
-            "html": body,
-        });
+        if (outputFileLocation != null && outputFileLocation.length > 0) {
+            tl.writeFile(outputFileLocation, body, {"encoding": "utf-8"});
+        }
 
         console.log(this.workItemsInRelease.length);
     }
@@ -98,23 +89,6 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
     private getTypeCellStyle(item: wi.WorkItem): string {
         return `class="td-${item.fields["System.WorkItemType"]}"`;
     }
-
-    private getInputOrEnvironment(inputName: string, environmentVariableName: string): string {
-        let localValue = tl.getInput(inputName, false);
-        if (localValue != null && localValue.length > 0) {
-            return localValue;
-        }
-
-        localValue = process.env[environmentVariableName];
-        if (localValue == null || localValue.length === 0) {
-            throw new Error(`No input called: ${inputName} and no fallback env variable found: ${environmentVariableName} found.`);
-        }
-
-        return localValue;
-    }
-
-    private getSmtpServer(): string { return this.getInputOrEnvironment("SmtpServer", "RELEASE_TASK_SMTP_SERVER"); }
-    private getFromAddress(): string { return this.getInputOrEnvironment("FromAddress", "RELEASE_TASK_FROM_ADDRESS"); }
 
     private getCssFile(): string {
         let cssFile: string = tl.getPathInput("CssFile", false, false);

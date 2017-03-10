@@ -11,53 +11,32 @@
         "Minor": 0,
         "Patch": 1
     },
-    "instanceNameFormat": "Echo $(samplestring)",
-    "groups": [
-        {
-            "name": "advanced",
-            "displayName": "Advanced",
-            "isExpanded": false
-        }
-    ],
+    "instanceNameFormat": "Generate Release Notes",
+    "groups": [ ],
     "inputs": [
-         {
-            "name": "ToAddress",
+        {
+            "name": "OutputVariable",
             "type": "string",
-            "label": "To Address",
+            "label": "Notes Output Variable",
+            "defaultValue": "ReleaseNoteText",
             "required": true,
-            "helpMarkDown": "The address the email should be sent to."
-        },
-         {
-            "name": "FromAddress",
+            "helpMarkDown": "The name of the variable to put the release notes into."
+        }, 
+        {
+            "name": "OutputFileLocation",
             "type": "string",
-            "label": "From Address",
+            "label": "Notes File Location",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "The address the email should be sent from. If you control the build controller you can set environment variable: RELEASE_TASK_FROM_ADDRESS. This setting will override."
-        },
-        {
-            "name": "Subject",
-            "type": "string",
-            "label": "Email Subject",
-            "required": true,
-            "helpMarkDown": "The subject of the email."
-        },
-        {
-            "name": "SmtpServer",
-            "type": "string",
-            "label": "Smtp Server",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The SMTP server you wish to use. If you control the build controller you can set environment variable: RELEASE_TASK_SMTP_SERVER. This setting will override."
-        },
+            "helpMarkDown": "The file location to put the release notes into. (Empty string means none)"
+        }, 
         {
             "name": "CssFile",
             "type": "filePath",
             "label": "Css File",
-            "defaultValue": "false",
+            "defaultValue": "",
             "required": false,
-            "helpMarkDown": "If you want to proved a custom css, specify it here. For Reference see here: https://github.com/jabbera/release-notes-task/blob/master/Tasks/GenerateReleaseNotes/defaultStyle.css",
-            "groupName": "advanced"
+            "helpMarkDown": "If you want to provide a custom css, specify it here. For Reference see here: https://github.com/jabbera/release-notes-task/blob/master/Tasks/GenerateReleaseNotes/defaultStyle.css"
         }
     ],
     "execution": {
