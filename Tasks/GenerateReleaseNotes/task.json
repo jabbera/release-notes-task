@@ -20,29 +20,43 @@
         }
     ],
     "inputs": [
-        {
-            "name": "samplepathinput",
-            "type": "filePath",
-            "label": "Sample Path",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "A sample path which is relative to root of repo if empty"
-        },
-        {
-            "name": "samplestring",
+         {
+            "name": "ToAddress",
             "type": "string",
-            "label": "Sample String",
+            "label": "To Address",
+            "required": true,
+            "helpMarkDown": "The address the email should be sent to."
+        },
+         {
+            "name": "FromAddress",
+            "type": "string",
+            "label": "From Address",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "A sample string"
+            "helpMarkDown": "The address the email should be sent from. If you control the build controller you can set environment variable: RELEASE_TASK_FROM_ADDRESS. This setting will override."
         },
         {
-            "name": "samplebool",
-            "type": "boolean",
-            "label": "Sample Boolean",
+            "name": "Subject",
+            "type": "string",
+            "label": "Email Subject",
+            "required": true,
+            "helpMarkDown": "The subject of the email."
+        },
+        {
+            "name": "SmtpServer",
+            "type": "string",
+            "label": "Smtp Server",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "The SMTP server you wish to use. If you control the build controller you can set environment variable: RELEASE_TASK_SMTP_SERVER. This setting will override."
+        },
+        {
+            "name": "CssFile",
+            "type": "filePath",
+            "label": "Css File",
             "defaultValue": "false",
             "required": false,
-            "helpMarkDown": "If this is true, this task will fail if any errors are written to the StandardError stream.",
+            "helpMarkDown": "If you want to proved a custom css, specify it here. For Reference see here: https://github.com/jabbera/release-notes-task/blob/master/Tasks/GenerateReleaseNotes/defaultStyle.css",
             "groupName": "advanced"
         }
     ],
