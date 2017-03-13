@@ -17,6 +17,25 @@
     color: white;
 }
 
+#changes {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#changes td, #workitems th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#changes th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
 #new-version {
     font-size: 24px;
 }
@@ -27,6 +46,16 @@
     border-width: 0px 0px 2px 0px;
     border-style: solid;
     padding-bottom: 12px;
+}
+
+#workitems-header {
+    text-align: center;
+    font-size: 24px;   
+}
+
+#changes-header {
+    text-align: center;
+    font-size: 24px;    
 }
 
 

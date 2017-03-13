@@ -15,7 +15,8 @@ async function run() {
         let notes: rn.IReleaseNotesCreator = new rn.ReleaseNotesCreator(
             await fetcher.currentlyDeployedRelease(),
             await fetcher.releaseInProgress(),
-            await fetcher.workItemsInRelease());
+            await fetcher.workItemsInRelease(),
+            await fetcher.changesInRelease());
 
         await notes.run();
     }

@@ -10,8 +10,12 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
     private currentlyDeployedRelease: ReleaseSummaryInformation;
     private releaseInProgress: ReleaseSummaryInformation;
     private workItemsInRelease: wi.WorkItem[] = [];
+    private changesInRelease: ReleaseCommit[] = [];
 
-    constructor(currentlyDeployedRelease: ReleaseSummaryInformation, releaseInProgress: ReleaseSummaryInformation, workItemsInRelease: wi.WorkItem[]) {
+    constructor(currentlyDeployedRelease: ReleaseSummaryInformation,
+                releaseInProgress: ReleaseSummaryInformation,
+                workItemsInRelease: wi.WorkItem[],
+                changesInRelease: ReleaseCommit[]) {
         if (currentlyDeployedRelease == null) {
             throw new Error("No current release");
         }
@@ -23,6 +27,7 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
         this.currentlyDeployedRelease = currentlyDeployedRelease;
         this.releaseInProgress = releaseInProgress;
         this.workItemsInRelease = workItemsInRelease;
+        this.changesInRelease = changesInRelease;
     }
 
     public async run() {
@@ -38,6 +43,7 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
         body = this.addProductName(body, this.currentlyDeployedRelease.definitionName);
         body = this.addReleaseSummary(body, this.currentlyDeployedRelease, this.releaseInProgress);
         body = this.addWorkItems(body, this.workItemsInRelease);
+        body = this.addChanges(body, this.changesInRelease);
 
         body += "</body></html>";
 
@@ -54,14 +60,38 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
     }
 
     private addWorkItems(body: string, workItemsInRelease: wi.WorkItem[]): string {
-        body += "<table id=workitems> \
+        if (workItemsInRelease.length === 0) {
+            return body;
+        }
+
+        body += "<p id=\"workitems-header\">Workitems Updated</p><table id=workitems> \
                 <tr> \
                     <th></th><th>Id</th><th>Title</th><th>State</th> \
-                </tr>";
+                </tr><br>";
 
         let isOdd: boolean = true;
         for (let item of workItemsInRelease) {
             body += `<tr ${this.getRowStyle(isOdd)}><td ${this.getTypeCellStyle(item)}>█</td><td><a href="${item.url}">${item.id}</a></td><td>${item.fields["System.Title"]}</td><td>${item.fields["System.State"]}</td></tr>`;
+            isOdd = !isOdd;
+        }
+
+        body += "</table>";
+        return body;
+    }
+
+    private addChanges(body: string, changesInRelease: ReleaseCommit[]): string {
+        if (changesInRelease.length === 0) {
+            return body;
+        }
+
+        body += "<p id=\"changes-header\">Changes Committed</p><table id=changes> \
+                <tr> \
+                    <th>Id</th><th>Message</th><th>Author</th><th>Timestamp</th> \
+                </tr>";
+
+        let isOdd: boolean = true;
+        for (let item of changesInRelease) {
+            body += `<tr ${this.getRowStyle(isOdd)}><td><a href="${item.link}">${item.id}</a></td><td>${item.message}</td><td>${item.author}</td><td>${item.timestamp}</td></tr>`;
             isOdd = !isOdd;
         }
 
