@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "release-notes-tasks",
     "name": "Generate Release Notes",
-    "version": "0.0.1",
+    "version": "0.0.10",
     "publisher": "jabbera",
 	"public": "true",
     "targets": [

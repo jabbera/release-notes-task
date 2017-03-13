@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import * as ic from "ignore-case";
 import * as wi from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
 import * as tl from "vsts-task-lib/task";
 
@@ -27,7 +28,7 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
 
     public async run() {
         let outputVariable: string = tl.getInput("OutputVariable", true);
-        let outputFileLocation: string = tl.getInput("OutputFileLocation", true);
+        let outputFileLocation: string = tl.getInput("OutputFileLocation");
 
         let cssFile: string = this.getCssFile();
 
@@ -92,11 +93,16 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
 
     private getCssFile(): string {
         let cssFile: string = tl.getPathInput("CssFile", false, false);
-        if (cssFile != null && cssFile.length > 0) {
+        // "" for filePath types defaults to: SYSTEM_ARTIFACTSDIRECTORY
+        if (cssFile != null && cssFile.length > 0 && !this.isDefaultFilePath(cssFile)) {
             tl.checkPath(cssFile, "CssFile");
             return cssFile;
         }
 
         return tl.resolve(__dirname, "defaultStyle.css");
+    }
+
+    private isDefaultFilePath(filePath: string): boolean {
+        return ic.equals(filePath, tl.getVariable("SYSTEM_ARTIFACTSDIRECTORY"));
     }
 }

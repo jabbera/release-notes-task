@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 1
+        "Patch": 10
     },
     "instanceNameFormat": "Generate Release Notes",
     "groups": [ ],
@@ -18,7 +18,7 @@
             "name": "OutputVariable",
             "type": "string",
             "label": "Notes Output Variable",
-            "defaultValue": "ReleaseNoteText",
+            "defaultValue": "ReleaseNotesText",
             "required": true,
             "helpMarkDown": "The name of the variable to put the release notes into."
         }, 

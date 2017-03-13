@@ -1,18 +1,15 @@
 {
   "name": "release-notes-task",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "vsts release notes task",
   "main": "index.js",
   "scripts": {
     "build": "tsc -p ./",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd Tasks\\GenerateReleaseNotes && npm install"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "vso-node-api": "^5.1.1",
-    "vsts-task-lib": "^1.1.0"
-  },
   "devDependencies": {
     "@types/chai": "^3.4.35",
     "@types/mocha": "^2.2.39",
@@ -22,7 +19,6 @@
     "mocha": "^3.2.0",
     "tfx-cli": "^0.3.49",
     "ts-node": "^2.1.0",
-    "tsc": "^1.20150623.0",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1"
   }
