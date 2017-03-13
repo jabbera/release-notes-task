@@ -9,7 +9,7 @@
     "version": {
         "Major": 0,
         "Minor": 0,
-        "Patch": 10
+        "Patch": 11
     },
     "instanceNameFormat": "Generate Release Notes",
     "groups": [ ],
@@ -37,6 +37,14 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "If you want to provide a custom css, specify it here. For Reference see here: https://github.com/jabbera/release-notes-task/blob/master/Tasks/GenerateReleaseNotes/defaultStyle.css"
+        },
+        {
+            "name": "UploadAsAttachment",
+            "type": "boolean",
+            "label": "Upload as attachment",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "Upload the release note as an attachment to the release."
         }
     ],
     "execution": {

@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import * as ic from "ignore-case";
 import * as wi from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
 import * as tl from "vsts-task-lib/task";
 
@@ -41,6 +40,9 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
         body = this.addWorkItems(body, this.workItemsInRelease);
 
         body += "</body></html>";
+
+        // setVariable can't take CR\LF inline.
+        body = body.replace(/\r?\n/g, "");
 
         tl.setVariable(outputVariable, body);
 
@@ -92,17 +94,10 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
     }
 
     private getCssFile(): string {
-        let cssFile: string = tl.getPathInput("CssFile", false, false);
-        // "" for filePath types defaults to: SYSTEM_ARTIFACTSDIRECTORY
-        if (cssFile != null && cssFile.length > 0 && !this.isDefaultFilePath(cssFile)) {
-            tl.checkPath(cssFile, "CssFile");
-            return cssFile;
+        if (tl.filePathSupplied("CssFile")) {
+            return tl.getPathInput("CssFile", true, true);
         }
 
         return tl.resolve(__dirname, "defaultStyle.css");
-    }
-
-    private isDefaultFilePath(filePath: string): boolean {
-        return ic.equals(filePath, tl.getVariable("SYSTEM_ARTIFACTSDIRECTORY"));
     }
 }
