@@ -4,6 +4,7 @@ import * as git from "vso-node-api/GitApi";
 import * as ra from "vso-node-api/ReleaseApi";
 import * as tfvc from "vso-node-api/TfvcApi";
 import * as wa from "vso-node-api/WorkItemTrackingApi";
+import * as corei from "vso-node-api/interfaces/CoreInterfaces";
 import * as giti from "vso-node-api/interfaces/GitInterfaces";
 import * as ri from "vso-node-api/interfaces/ReleaseInterfaces";
 import * as tfcvi from "vso-node-api/interfaces/TfvcInterfaces";
@@ -78,10 +79,33 @@ export class ReleaseSummaryFetcher implements IReleaseSummaryFetcher {
         this.currentlyDeployedReleaseField = releases.find((x) => x.id === this.releaseId);
         this.releaseInProgressField = releases.find((x) => x.id !== this.releaseId);
 
+
         let workItemRefs: ri.ReleaseWorkItemRef[] = await releaseApi.getReleaseWorkItemsRefs(this.teamProject, this.releaseInProgressField.id, this.currentlyDeployedReleaseField.id);
         if (workItemRefs.length !== 0) {
+                    let inIds: string = workItemRefs.map((x) => x.id).join(",");
+
+                    let wiql: wi.Wiql = {
+                        "query": `SELECT \
+        [System.Links.LinkType], \
+        [System.Id], \
+        [System.WorkItemType], \
+        [System.Title], \
+        [System.State], \
+        [System.AreaPath], \
+        [System.IterationPath] \
+FROM workitemLinks \
+WHERE \
+        [Source].[System.TeamProject] = @project \
+        AND [Target].[System.Id] IN (${inIds}) \
+        and [System.Links.LinkType] = "Child" \
+ORDER BY [Source].[System.ChangedDate] DESC
+mode(Recursive)`,
+                    };
+
+
             let workItemApi: wa.IWorkItemTrackingApi = connect.getWorkItemTrackingApi();
-            this.workItemsInReleaseField = await workItemApi.getWorkItems(workItemRefs.map((x) => Number(x.id)), null, null, wi.WorkItemExpand.All);
+            let qr: wi.WorkItemQueryResult = await workItemApi.queryByWiql(wiql, {"project": this.teamProject} as corei.TeamContext, false, 1000);
+            this.workItemsInReleaseField = await workItemApi.getWorkItems(qr.workItemRelations.map((x) => Number(x.target.id)), null, null, wi.WorkItemExpand.All);
         }
 
         // The documentation is backwards on the releaseid versus the basereleaseid
