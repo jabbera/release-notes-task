@@ -2,7 +2,7 @@
     "id": "9FFFCDB8-CFC6-4597-A779-BBEADB0DFBE6",
     "name": "generate-release-notes-task",
     "friendlyName": "Generate Release Notes",
-    "description": "Genereate Release Notes from the last sucessfuly release.",
+    "description": "Genereate Release Notes from the last sucessful release.",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "Michael Barry",
@@ -49,7 +49,7 @@
     ],
     "execution": {
         "Node": {
-            "target": "index.js"
+            "target": "entry.js"
         }
     }
 }
