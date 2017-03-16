@@ -120,7 +120,7 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
     }
 
     private getTypeCellStyle(item: wi.WorkItem): string {
-        return `class="td-${item.fields["System.WorkItemType"]}"`;
+        return `class="td-${item.fields["System.WorkItemType"].replace(/\s/g, "")}"`;
     }
 
     private getCssFile(): string {

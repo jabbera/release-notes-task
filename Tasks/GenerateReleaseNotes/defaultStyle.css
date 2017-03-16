@@ -64,8 +64,57 @@ tr.tr-even {
 }
 
 td.td-Task {
+    color: #F2CB1D;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-Feature {
+    color: #773B93;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-Epic {
+    color: #FF7B00;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-Impediment {
+    color: #FF9D00;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-TestCase {
+    color: #FF9D00;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-Issue {
+    color: #FF9D00;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-productbacklogitem {
     color: #009CCC;
     text-align: center;
+    width: 10px;
+}
+
+td.td-productbacklogitem {
+    color: #009CCC;
+    text-align: center;
+    width: 10px;
+}
+
+td.td-userstory {
+    color: #009CCC;
+    text-align: center;
+    width: 10px;
 }
 
 * {

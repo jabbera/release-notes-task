@@ -86,13 +86,7 @@ export class ReleaseSummaryFetcher implements IReleaseSummaryFetcher {
 
                     let wiql: wi.Wiql = {
                         "query": `SELECT \
-        [System.Links.LinkType], \
-        [System.Id], \
-        [System.WorkItemType], \
-        [System.Title], \
-        [System.State], \
-        [System.AreaPath], \
-        [System.IterationPath] \
+        [System.Id] \
 FROM workitemLinks \
 WHERE \
         [Source].[System.TeamProject] = @project \
