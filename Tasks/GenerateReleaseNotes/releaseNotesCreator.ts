@@ -91,7 +91,7 @@ export class ReleaseNotesCreator implements IReleaseNotesCreator {
 
         let isOdd: boolean = true;
         for (let item of changesInRelease) {
-            body += `<tr ${this.getRowStyle(isOdd)}><td><a href="${item.link}">${item.id}</a></td><td>${item.message}</td><td>${item.author}</td><td>${item.timestamp}</td></tr>`;
+            body += `<tr ${this.getRowStyle(isOdd)}><td><a href="${item.link}">${item.id}</a></td><td>${item.message}</td><td>${item.author}</td><td>${item.timestamp.toLocaleString()}</td></tr>`;
             isOdd = !isOdd;
         }
 
